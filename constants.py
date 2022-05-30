@@ -1,6 +1,6 @@
 # window size
-WINDOWDITH = 400
-WINDOWHEIGHT = 400
+WINDOWWIDTH = 800
+WINDOWHEIGHT = 800
 
 # colors
 BLACK = (0, 0, 0)
