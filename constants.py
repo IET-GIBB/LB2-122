@@ -1,6 +1,6 @@
 # window size
-WINDOWDITH = 400
-WINDOWHEIGHT = 400
+WINDOWWIDTH = 500
+WINDOWHEIGHT = 500
 
 # colors
 BLACK = (0, 0, 0)
@@ -16,4 +16,4 @@ UPLEFT = 'upleft'
 UPRIGHT = 'upright'
 
 # move speed
-MOVESPEED = 4
+MOVESPEED = 10
