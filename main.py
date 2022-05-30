@@ -10,10 +10,35 @@ saul = pygame.image.load('assets/saul.png')
 
 def set_up_game():
     pygame.init()
+<<<<<<< HEAD
+=======
+
+    window_surface = pygame.display.set_mode((constants.WINDOWWIDTH, constants.WINDOWHEIGHT), 0, 32)
+    window_surface.fill(constants.WHITE)
+    pygame.display.set_caption('Better dodge Saul')
+    image = pygame.transform.scale(pygame.image.load("assets/Game_Background.png"), (constants.WINDOWHEIGHT / 405 * 722, constants.WINDOWHEIGHT))
+    window_surface.blit(image, (constants.WINDOWWIDTH / 2 - image.get_rect().width / 2, 0))
+>>>>>>> dbbe2909e61e713d0d6457d336ab885dc9234a34
     saul_image = pygame.image.load('assets/saul_head.png')
     pygame.display.set_icon(saul_image)
+<<<<<<< HEAD
     pygame.display.set_caption('Better Dodge Saul')
     window_surface.fill(constants.BLACK)
+=======
+
+    basic_font = pygame.font.SysFont(None, 48)
+
+    text = basic_font.render('Better dodge Saul', True, constants.BLACK, constants.WHITE)
+    text_rect = text.get_rect()
+    text_rect.centerx = window_surface.get_rect().centerx
+    text_rect.centery = window_surface.get_rect().centery
+
+    # pygame.draw.rect(window_surface, constants.RED, (text_rect.left - 20,
+    #                                                  text_rect.top - 20,
+    #                                                  text_rect.width + 40,
+    #                                                  text_rect.height + 40))
+
+>>>>>>> dbbe2909e61e713d0d6457d336ab885dc9234a34
 
 
 set_up_game()
@@ -36,6 +61,7 @@ while True:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+<<<<<<< HEAD
         if event.type == KEYDOWN:
             if event.key == K_LEFT or event.key == K_a:
                 moveRight = False
@@ -90,6 +116,8 @@ while True:
 
     for i in range(len(squares)):
         pygame.draw.rect(window_surface, constants.RED, squares[i])
+=======
+>>>>>>> dbbe2909e61e713d0d6457d336ab885dc9234a34
 
     pygame.display.update()
     clock.tick(40)
