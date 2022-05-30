@@ -28,6 +28,7 @@ def set_up_game():
 
     window_surface.fill(constants.WHITE)
 
+
 set_up_game()
 pygame.display.update()
 
@@ -37,4 +38,3 @@ while True:
             pygame.quit()
             sys.exit()
     pygame.display.update()
-    pygame.display.flip()
