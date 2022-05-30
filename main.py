@@ -1,36 +1,40 @@
 import pygame, sys
 from pygame.locals import *
 
-import colors
+import constants
 
 
 def set_up_game():
     pygame.init()
 
-    windowSurface = pygame.display.set_mode((500, 400), 0, 32)
-    pygame.display.set_caption('Hello world!')
+    window_surface = pygame.display.set_mode((constants.WINDOWDITH, constants.WINDOWHEIGHT), 0, 32)
+    pygame.display.set_caption('Better dodge Saul')
 
-    basicFont = pygame.font.SysFont(None, 48)
+    saul_image = pygame.image.load('assets/saul_head.png')
 
-    text = basicFont.render('Better dodge Saul', True, colors.BLACK, colors.WHITE)
-    textRect = text.get_rect()
-    textRect.centerx = windowSurface.get_rect().centerx
-    textRect.centery = windowSurface.get_rect().centery
+    pygame.display.set_icon(saul_image)
 
-    pygame.draw.rect(windowSurface, colors.RED, (textRect.left - 20,
-                                                 textRect.top - 20,
-                                                 textRect.width + 40,
-                                                 textRect.height + 40))
+    basic_font = pygame.font.SysFont(None, 48)
 
-    windowSurface.fill(colors.WHITE)
+    text = basic_font.render('Better dodge Saul', True, constants.BLACK, constants.WHITE)
+    text_rect = text.get_rect()
+    text_rect.centerx = window_surface.get_rect().centerx
+    text_rect.centery = window_surface.get_rect().centery
 
-    pygame.display.update()
+    pygame.draw.rect(window_surface, constants.RED, (text_rect.left - 20,
+                                                     text_rect.top - 20,
+                                                     text_rect.width + 40,
+                                                     text_rect.height + 40))
 
+    window_surface.fill(constants.WHITE)
 
 set_up_game()
+pygame.display.update()
 
 while True:
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+    pygame.display.update()
+    pygame.display.flip()
