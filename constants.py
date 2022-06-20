@@ -18,5 +18,5 @@ UPLEFT = 'upleft'
 UPRIGHT = 'upright'
 
 # move speed
-MOVESPEED = 7.5
-SQUARESSPEED = 10
+MOVESPEED = 3.75
+SQUARESSPEED = 5
