@@ -1,4 +1,6 @@
-import pygame, sys, random
+import pygame
+import random
+import sys
 from pygame.locals import *
 
 import constants
@@ -26,7 +28,13 @@ moveDown = False
 startScreen = True
 gameOver = False
 
+alreadyPressed = False
+
+highScore = 0
+speedBoost = 0
 points = 0
+
+spawnRatePerFrame = 0.36
 
 while True:
     for event in pygame.event.get():
@@ -77,25 +85,43 @@ while True:
         text_rect.centery = window_surface.get_rect().centery
 
         window_surface.blit(pygame.font.SysFont("arial", 72).render("Start", True, "WHITE"), (330, 610))
+        window_surface.blit(pygame.font.SysFont("arial", 48).render("High Score", True, "WHITE"), (600, 20))
+        window_surface.blit(pygame.font.SysFont("arial", 48).render(str(highScore), True, "WHITE"), (600, 80))
 
-        if pygame.mouse.get_pressed(3)[0] and 200 <= pygame.mouse.get_pos()[0] <= 600 <= pygame.mouse.get_pos()[
-            1] <= 800:
+        if alreadyPressed and not pygame.mouse.get_pressed(3)[0]:
+            alreadyPressed = False
+
+        if not alreadyPressed and pygame.mouse.get_pressed(3)[0] and 200 <= pygame.mouse.get_pos()[0] <= 600 <= \
+                pygame.mouse.get_pos()[
+                    1] <= 800:
             startScreen = False
             gameOver = False
+            points = 0
 
     if not startScreen and not gameOver:
         window_surface.fill(constants.BLACK)
         window_surface.blit(pygame.font.SysFont("arial", 24).render("Points: " + str(points), True, "WHITE"), (20, 20))
-        square_counter += 1
-        if square_counter >= 40:
+        spawn = random.random() * 100 <= spawnRatePerFrame
+
+        if spawn:
             square_counter = 0
             squares.append(pygame.Rect(random.randint(0, constants.WINDOWWIDTH - 40),
                                        random.randint(-constants.WINDOWHEIGHT, 0), 40, 40))
-
         if moveUp and moveDown and moveLeft and moveRight:
+            player.x = player.x
+            player.y = player.y
 
         elif moveUp and moveDown and moveLeft:
-            player.x -= constants.MOVESPEED
+            player.x -= constants.DEFAULT_MOVE_SPEED
+
+        elif moveUp and moveDown and moveRight:
+            player.x += constants.DEFAULT_MOVE_SPEED
+
+        elif moveLeft and moveRight and moveUp:
+            player.y -= constants.DEFAULT_MOVE_SPEED
+
+        elif moveLeft and moveRight and moveDown:
+            player.y += constants.DEFAULT_MOVE_SPEED
 
         elif moveUp and moveDown:
             player.y = player.y
@@ -105,27 +131,27 @@ while True:
 
         else:
             if moveUp and player.y >= 0:
-                player.y -= constants.MOVESPEED
+                player.y -= constants.DEFAULT_MOVE_SPEED
             if moveDown and player.y + 50 <= constants.WINDOWHEIGHT:
-                player.y += constants.MOVESPEED
+                player.y += constants.DEFAULT_MOVE_SPEED
             if moveLeft and player.x >= 0:
-                player.x -= constants.MOVESPEED
+                player.x -= constants.DEFAULT_MOVE_SPEED
             if moveRight and player.x + 50 <= constants.WINDOWWIDTH:
-                player.x += constants.MOVESPEED
+                player.x += constants.DEFAULT_MOVE_SPEED
 
         pygame.draw.rect(window_surface, constants.WHITE, player)
 
         for s in squares[:]:
-            s.y += constants.SQUARESSPEED
+            s.y += constants.DEFAULT_SQUARES_SPEED + speedBoost
             if player.colliderect(s):
-                player.width = 0
-                player.height = 0
                 gameOver = True
                 squares.remove(s)
 
             if s.y >= constants.WINDOWHEIGHT:
                 squares.remove(s)
                 points += 1
+                if points % 10 == 0:
+                    speedBoost += 0.01
 
         for i in range(len(squares)):
             pygame.draw.rect(window_surface, constants.RED, squares[i])
@@ -135,12 +161,20 @@ while True:
         window_surface.blit(pygame.font.SysFont("arial", 84).render("Game Over", True, "White"), (230, 200))
         pygame.draw.rect(window_surface, constants.RED, pygame.Rect(200, 600, 400, 100))
         window_surface.blit(pygame.font.SysFont("arial", 72).render("Resume", True, "WHITE"), (300, 610))
+        window_surface.blit(pygame.font.SysFont("arial", 60).render("Your Points: " + str(points), True, "White"),
+                            (240, 400))
 
-        if pygame.mouse.get_pressed(3)[0] and 200 <= pygame.mouse.get_pos()[0] <= 600 <= pygame.mouse.get_pos()[
-            1] <= 800:
+        if highScore < points:
+            highScore = points
+
+        if pygame.mouse.get_pressed(3)[0] and 200 <= pygame.mouse.get_pos()[0] <= 600 <= pygame.mouse.get_pos()[1] <= 800:
             startScreen = True
+            alreadyPressed = True
+            speedBoost = 0
+            squares = []
+            player = pygame.Rect(375, 600, 50, 50)
 
     pygame.display.update()
 
     # FPS
-    clock.tick(120)
+    clock.tick(constants.FRAMES_PER_SECOND)
